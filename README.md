@@ -20,3 +20,20 @@ Format – Motorola; Data Size – 8 bits; Prescale (for Baud rate) – 8; Clock
 Clock Phase – 1 Edge; NSS Signal Type – Software.
 - SPI3 dirbtų – Receive Only Slave režime; Hardware NSS Signal – nenaudosime. Frame
 Format – Motorola; Data Size – 8 bits; Prescale (for Baud rate) – 8; Clock Polerity – Low;
+
+Clock Phase – 1 Edge; NSS Signal Type – Software. NVIC Settgings -> SPI3 Global
+Interrupt – enable.
+
+- TIM2 sukonfigūruokite taip, kad galėtumėte fiksuoti 1 sekundės laiko intervalus. Sisteminį
+dažnį ir kitus reikalingus parametrus pasirinkite taip, kad gautumėte 1 s periodą.
+
+• Sujunkite reikalingus SPI4 ir SPI3 išvadus laideliais. Kadangi SPI3 dirba Receive Only Slave
+režimu, privaloma sujungti SPI4_SCK (PE2) su SPI3_SCK (PB3) ir SPI4_MOSI (PE6) su
+SPI3_MOSI (PC12). Jei norite pilnos simetrijos bandymams, papildomai galite sujungti
+SPI4_MISO (PE5) su SPI3_MISO (PC11).
+
+• Parašykite programą, kad kas 1 sekundę iš laikmačio skaitiklio pertraukties funkcijos
+galėtumėte per SPI4 išsiųsti 1 baitą duomenų į SPI3. SPI3 naudoti pertraukčių mechanizmą, tai
+yra CPU Non Blocking Mode. Iš SPI4 turi būti periodiškai siunčiamos reikšmės 1, 3, 7 ir 12.
+Gautus rezultatus į SPI3 atvaizduokite TFT ekrane, o PG13 ir PG14 šviesos diodus naudokite
+siunčiamo ir priimamo baito aktyvumo indikacijai.
